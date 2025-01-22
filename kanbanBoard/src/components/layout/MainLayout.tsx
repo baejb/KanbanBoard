@@ -5,21 +5,21 @@ import { breakpoints } from '../../utils/breakpoints';
 const styles = {
   mobile: {
     fontSize: '0.8rem',
-    flexDirection: 'column',
+    direction: 'column',
   },
   tablet: {
     fontSize: '1rem',
-    flexDirection: 'row',
+    direction: 'row',
   },
   desktop: {
     fontSize: '1.2rem',
-    flexDirection: 'row',
+    direction: 'row',
   },
 };
 
-const Container = styled.div<{ fontSize: string; flexDirection: string }>`
+const Container = styled.div<{ fontSize: string; direction: string }>`
   display: flex;
-  flex-direction: ${({ flexDirection }) => flexDirection};
+  flex-direction: ${({ direction }) => direction};
   font-size: ${({ fontSize }) => fontSize};
   gap: 1rem;
   padding: 1rem;
@@ -39,10 +39,10 @@ const MainLayout = ({ children }: MainLayoutProps) => {
 
   const layoutType = isMobile ? 'mobile' : isTablet ? 'tablet' : 'desktop';
 
-  const { fontSize, flexDirection } = styles[layoutType];
+  const { fontSize, direction } = styles[layoutType];
 
   return (
-    <Container fontSize={fontSize} flexDirection={flexDirection}>
+    <Container fontSize={fontSize} direction={direction}>
       {children}
     </Container>
   );
