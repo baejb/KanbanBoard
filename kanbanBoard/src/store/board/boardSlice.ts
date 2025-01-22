@@ -24,7 +24,7 @@ const boardSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchBoards.fulfilled, (state, action) => {
-        state.boards = action.payload;
+        state.boards = action.payload.sort((a, b) => a.id - b.id);
         state.loading = false;
       })
       .addCase(fetchBoards.rejected, (state, action) => {
