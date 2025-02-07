@@ -8,7 +8,7 @@ const initialState: BoardState = {
 };
 
 export const fetchBoards = createAsyncThunk('board/fetchBoards', async () => {
-  const { data, error } = await supabase.from('boards').select('*');
+  const { data, error } = await supabase.from('boards').select('*,issues(*)');
   if (error) throw new Error(error.message);
   return data as Board[];
 });
