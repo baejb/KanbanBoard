@@ -1,9 +1,9 @@
-import { Issue } from './issueType';
+import { IssueType } from './issueType';
 export interface Board {
   id: number;
   name: string;
   issue_count: number;
-  issues: Issue[];
+  issues: IssueType[];
 }
 
 export interface BoardState {
@@ -24,5 +24,5 @@ export type BoardHeaderProps = {
 };
 
 export type BoardContentProps = {
-  issues: Issue[];
+  issues: IssueType[];
 };
