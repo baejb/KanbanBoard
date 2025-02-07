@@ -1,14 +1,14 @@
-export interface Issue {
+export interface IssueType {
   id: number;
   title: string;
   content: string;
   created_at: string;
   status: string;
-  boardId: number;
+  board_id: number;
 }
 
 export interface IssueState {
-  issues: Issue[];
+  issues: IssueType[];
   loading: boolean;
   error: string | null;
 }
