@@ -8,6 +8,7 @@ interface TitleType {
 }
 
 const TitleText = styled.div<TitleType>`
+  width: 100%;
   font-size: ${({ fontSize }) => fontSize || '1.5rem'};
   color: ${({ color }) => color || '#000'};
   font-weight: ${({ fontWeight }) => fontWeight || 'normal'};

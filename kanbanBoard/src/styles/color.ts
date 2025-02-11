@@ -11,6 +11,8 @@ const colors = {
   BOARD_COUNT_BACKGROUND: '#e7ebee',
   BOARD_BACKGROUND: '#f7f8fa',
   BOARD_BACKGROUND_BORDER: '#eff2f4',
+  TEXT: '#59636e',
+  SUBMIT: '#1a7935',
 };
 
 export default colors;
