@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import colors from '../../styles/color';
 import Title from '../common/Title';
-import { BoardProps } from '../../types/boardType';
+import { BoardHeaderProps } from '../../types/boardType';
 type CircleProps = {
   icons: 'BACKLOG' | 'TODO' | 'INPROGRESS' | 'DONE';
 };
@@ -26,16 +26,16 @@ const BoardCount = styled.div`
   border-radius: 50%;
   background-color: ${colors.BOARD_COUNT_BACKGROUND};
   color: ${colors.BOARD_COUNT};
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   text-align: center;
-  padding: 0.1rem;
+  padding: 0.2rem;
 `;
 
-const BoardHeader = ({ icons, name, issue_count }: BoardProps) => {
+const BoardHeader = ({ icons, name, issue_count }: BoardHeaderProps) => {
   return (
     <Container>
       <Circle icons={icons} />
-      <Title fontSize="1.2rem">{name}</Title>
+      <Title fontSize="1.1rem">{name}</Title>
       <BoardCount>{issue_count}</BoardCount>
     </Container>
   );
