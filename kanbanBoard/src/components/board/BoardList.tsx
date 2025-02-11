@@ -8,7 +8,6 @@ import Board from './Board';
 const BoardList: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { boards, loading, error } = useSelector((state: RootState) => state.board);
-  console.log(boards);
   useEffect(() => {
     dispatch(fetchBoards());
   }, [dispatch]);
