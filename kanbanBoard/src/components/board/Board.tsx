@@ -1,12 +1,11 @@
+import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import colors from '../../styles/color';
 import BoardHeader from './BoardHeader';
 import { BoardProps } from '../../types/boardType';
-import BoardContent from './BoardContent';
 import AddIssueButton from './AddIssueButton';
-// Board 는 Board 헤더 , 푸터 , issue를 가지는것 (IssueList)
-
-const Container = styled.div`
+import BoardContent from './BoardContent';
+const Container = styled.div<{ isOver: boolean }>`
   height: 75vh;
   min-width: 45%;
   display: flex;
@@ -15,14 +14,26 @@ const Container = styled.div`
   gap: 1rem;
   padding: 1rem 0.5rem;
   background-color: ${colors.BOARD_BACKGROUND};
-  border: 1px solid ${colors.BOARD_BACKGROUND_BORDER};
+  border: ${({ isOver }) =>
+    isOver ? `1px solid ${colors.DRAG_BORDER}` : `1px solid ${colors.BOARD_BACKGROUND_BORDER}`};
   border-radius: 5px;
   position: relative;
+  transition: border 0.2s ease-in-out;
 `;
 
-const Board = ({ icons, board }: BoardProps) => {
+const Board = ({ icons, board, onDrop }: BoardProps) => {
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: 'ISSUE',
+    drop: (item: { id: number; boardId: number }) => {
+      onDrop(item.id, board.id);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  }));
+
   return (
-    <Container>
+    <Container ref={drop} isOver={isOver}>
       <BoardHeader icons={icons} name={board.name} issue_count={board.issue_count} />
       <BoardContent issues={board.issues} />
       <AddIssueButton boardId={board.id} />

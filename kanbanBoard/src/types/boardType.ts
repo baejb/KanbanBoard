@@ -1,5 +1,5 @@
 import { IssueType } from './issueType';
-export interface Board {
+export interface BoardType {
   id: number;
   name: string;
   issue_count: number;
@@ -7,14 +7,15 @@ export interface Board {
 }
 
 export interface BoardState {
-  boards: Board[];
+  boards: BoardType[];
   loading: boolean;
   error: string | null;
 }
 
 export type BoardProps = {
-  board: Board;
+  board: BoardType;
   icons: 'BACKLOG' | 'TODO' | 'INPROGRESS' | 'DONE';
+  onDrop: (id: number, newBoardId: number) => void;
 };
 
 export type BoardHeaderProps = {

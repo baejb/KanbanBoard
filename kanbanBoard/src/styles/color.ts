@@ -13,6 +13,7 @@ const colors = {
   BOARD_BACKGROUND_BORDER: '#eff2f4',
   TEXT: '#59636e',
   SUBMIT: '#1a7935',
+  DRAG_BORDER: '#325bff',
 };
 
 export default colors;

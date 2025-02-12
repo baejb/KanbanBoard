@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { Board, BoardState } from '../../types/boardType';
+import { BoardType, BoardState } from '../../types/boardType';
 import { IssueType } from '../../types/issueType';
 import { supabase } from '../../supabaseClient';
 
@@ -12,7 +12,10 @@ const initialState: BoardState = {
 export const fetchBoards = createAsyncThunk('board/fetchBoards', async () => {
   const { data, error } = await supabase.from('boards').select('*,issues(*)');
   if (error) throw new Error(error.message);
-  return data as Board[];
+  return data.map((board: any) => ({
+    ...board,
+    issues: Array.isArray(board.issues) ? (board.issues as IssueType[]) : ([] as IssueType[]),
+  })) as BoardType[];
 });
 
 export const addIssue = createAsyncThunk(
@@ -38,6 +41,7 @@ export const addIssue = createAsyncThunk(
     }
   },
 );
+
 const boardSlice = createSlice({
   name: 'board',
   initialState,
@@ -46,10 +50,34 @@ const boardSlice = createSlice({
       const { boardId, issue } = action.payload;
       const board = state.boards.find((b) => b.id === boardId);
       if (board) {
+        board.issues = board.issues ?? ([] as IssueType[]);
         board.issues.push(issue);
       }
     },
+
+    moveIssue: (state, action: PayloadAction<{ id: number; newBoardId: number }>) => {
+      const { id, newBoardId } = action.payload;
+      let movedIssue: IssueType | any = null;
+
+      state.boards.forEach((board) => {
+        if (!Array.isArray(board.issues)) board.issues = [] as IssueType[];
+        const issueIndex = board.issues.findIndex((issue) => issue.id === id);
+        if (issueIndex !== -1) {
+          movedIssue = board.issues.splice(issueIndex, 1)[0];
+        }
+      });
+
+      if (!movedIssue) return;
+
+      movedIssue.board_id = newBoardId;
+      const newBoard = state.boards.find((board) => board.id === newBoardId);
+      if (newBoard) {
+        newBoard.issues = newBoard.issues ?? ([] as IssueType[]);
+        newBoard.issues.push(movedIssue);
+      }
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(fetchBoards.pending, (state) => {
@@ -57,7 +85,8 @@ const boardSlice = createSlice({
         state.error = null;
       })
       .addCase(fetchBoards.fulfilled, (state, action) => {
-        state.boards = action.payload.sort((a, b) => a.id - b.id);
+        state.boards = action.payload;
+        state.boards.sort((a, b) => a.id - b.id);
         state.loading = false;
       })
       .addCase(fetchBoards.rejected, (state, action) => {
@@ -68,10 +97,12 @@ const boardSlice = createSlice({
         const { boardId, issue } = action.payload;
         const board = state.boards.find((b) => b.id === boardId);
         if (board) {
+          board.issues = board.issues ?? ([] as IssueType[]);
           board.issues.push(issue);
         }
       });
   },
 });
-export const { addIssueToBoard } = boardSlice.actions;
+
+export const { addIssueToBoard, moveIssue } = boardSlice.actions;
 export default boardSlice.reducer;
