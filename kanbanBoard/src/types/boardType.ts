@@ -15,7 +15,7 @@ export interface BoardState {
 export type BoardProps = {
   board: BoardType;
   icons: 'BACKLOG' | 'TODO' | 'INPROGRESS' | 'DONE';
-  onDrop: (id: number, newBoardId: number) => void;
+  onDrop: (id: number, newBoardId: number, newIndex: number) => void;
 };
 
 export type BoardHeaderProps = {
