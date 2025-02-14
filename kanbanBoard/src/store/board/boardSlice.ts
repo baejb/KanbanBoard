@@ -55,25 +55,34 @@ const boardSlice = createSlice({
       }
     },
 
-    moveIssue: (state, action: PayloadAction<{ id: number; newBoardId: number }>) => {
-      const { id, newBoardId } = action.payload;
+    moveIssue: (
+      state,
+      action: PayloadAction<{ id: number; newBoardId: number; newIndex: number }>,
+    ) => {
+      const { id, newBoardId, newIndex } = action.payload;
       let movedIssue: IssueType | any = null;
+      let previousBoard: any = null;
 
+      // 1️⃣ 기존 보드에서 이슈 찾고 제거
       state.boards.forEach((board) => {
-        if (!Array.isArray(board.issues)) board.issues = [] as IssueType[];
         const issueIndex = board.issues.findIndex((issue) => issue.id === id);
         if (issueIndex !== -1) {
           movedIssue = board.issues.splice(issueIndex, 1)[0];
+          previousBoard = board;
         }
       });
 
-      if (!movedIssue) return;
+      if (!movedIssue) {
+        return;
+      }
 
       movedIssue.board_id = newBoardId;
       const newBoard = state.boards.find((board) => board.id === newBoardId);
+
       if (newBoard) {
-        newBoard.issues = newBoard.issues ?? ([] as IssueType[]);
-        newBoard.issues.push(movedIssue);
+        // 2️⃣ newIndex가 유효하면 해당 위치에 삽입, 아니면 마지막에 추가
+        const insertIndex = Math.min(newIndex, newBoard.issues.length);
+        newBoard.issues.splice(insertIndex, 0, movedIssue);
       }
     },
   },

@@ -3,8 +3,7 @@ import styled from 'styled-components';
 import colors from '../../styles/color';
 import { IssueType } from '../../types/issueType';
 
-// board에서 보이는 issue는 타이틀만 보임 , 클릭 시 모달 생성 및 세부정보 확인
-const Container = styled.div<{ isDragging: boolean }>`
+const Container = styled.div<{ $isDragging: boolean }>`
   padding: 5%;
   display: flex;
   align-items: center;
@@ -12,7 +11,7 @@ const Container = styled.div<{ isDragging: boolean }>`
   border-radius: 5px;
   background-color: white;
   cursor: grab;
-  opacity: ${({ isDragging }) => (isDragging ? 0.5 : 1)};
+  opacity: ${({ $isDragging }) => ($isDragging ? 0.5 : 1)};
 
   &:active {
     cursor: grabbing;
@@ -35,7 +34,7 @@ const Issue = ({ issues }: { issues: IssueType }) => {
   }));
 
   return (
-    <Container ref={drag} isDragging={isDragging}>
+    <Container ref={drag} $isDragging={isDragging}>
       <Title>{issues.title}</Title>
     </Container>
   );

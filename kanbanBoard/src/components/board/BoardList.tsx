@@ -10,14 +10,14 @@ const BoardList: React.FC = () => {
   const { boards, loading, error } = useSelector((state: RootState) => state.board);
 
   useEffect(() => {
-    dispatch(fetchBoards()); // 🔥 보드 목록 가져오기
+    dispatch(fetchBoards());
   }, [dispatch]);
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
-  const handleDrop = (id: number, newBoardId: number) => {
-    dispatch(moveIssue({ id, newBoardId }));
+  const handleDrop = (id: number, newBoardId: number, newIndex: number) => {
+    dispatch(moveIssue({ id, newBoardId, newIndex }));
   };
 
   return (
@@ -27,7 +27,7 @@ const BoardList: React.FC = () => {
           key={board.id}
           icons={board.name.toUpperCase() as 'BACKLOG' | 'TODO' | 'INPROGRESS' | 'DONE'}
           board={board}
-          onDrop={handleDrop} // 🔥 handleDrop 전달
+          onDrop={handleDrop}
         />
       ))}
     </MainLayout>
